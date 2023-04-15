@@ -1,0 +1,15 @@
+header {
+    padding: 3vh;
+    background: #6ace7d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav ul {
+    width: 10vw;
+    list-style-type: none;
+    padding: 0px;
+    display: flex;
+    justify-content: space-between;
+}
