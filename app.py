@@ -5,7 +5,7 @@ from user import USER
 # initializes flask app:
 app = Flask(__name__)
 
-current_user = USER("Ben", "Geduld", "bengeduld@gmail.com")
+current_user = USER("Ben", "Jamin", "bengeduld@gmail.com")
 @app.route('/')
 def mainPage():
     return render_template(

@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8"><title>Test Page</title>
         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"> -->
+        <script src="https://unpkg.com/konva@9.0.0/konva.min.js"></script>
         <link rel="stylesheet" href="/static/style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Test Page</title>
@@ -10,5 +11,35 @@
     <body>
         {% include 'includes/header.html' %}
         <h1> Hi {{user.firstName}}  {{user.lastName}}! </h1>
+        <div id="container"></div>
+        <script>
+            var stage = new Konva.Stage({
+                container: "container",
+                width: 600,
+                height: 400
+            });
+            var layer = new Konva.Layer({
+                id: "BaseLayer"
+            });
+            stage.add(layer);
+
+            var imageObj = new Image();
+            imageObj.onload = function () {
+                var image = new Konva.Image({
+                x: 50,
+                y: 50,
+                image: imageObj,
+                width: 106,
+                height: 118,
+                draggable: true
+                });
+
+            // add the shape to the layer
+            layer.add(image);
+            layer.batchDraw();
+            };
+            imageObj.src = "https://fastly.picsum.photos/id/879/200/200.jpg?hmac=_4fWz44KoPcfzc5VRuEhms_-fXjdx1VsijYO3xVD9b0"
+        </script>
+
     </body>
 </html>
