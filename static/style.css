@@ -14,6 +14,10 @@ body {
   background-color: #c93fdb;
 }
 
+#rock_post {
+    display: none;
+}
+
 #content {
     display: flex;
     flex-direction: row;
@@ -152,7 +156,7 @@ main {
   flex-direction: column;
 }
 .post {
-  height: 100%;
+  height: 50%;
   width: 60%;
   background-color: rgb(255, 255, 255);
   border: solid 10px #f0f0f0;
@@ -182,19 +186,13 @@ main {
   display: flex;
   padding-top: 10px;
 }
-#heart_icon {
+#thumbs_up_icon {
   padding-right: 10px;
 }
-#comment_icon {
+#thumbs_down_icon {
   padding-right: 10px;
 }
-#plane_icon {
-  padding-right: 10px;
-}
-#bookmark {
-  margin-left: auto;
-  padding-right: 10px;
-}
+
 .likes-and-comments {
   margin-left: 20px;
 }
