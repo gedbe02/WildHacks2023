@@ -28,13 +28,10 @@ var backgroundImage = new Konva.Image({
     // scale:{x:BG_SCALE,y:BG_SCALE},
   });
 bgLayer.add(backgroundImage);
-console.log(backgroundImage.width(1200), backgroundImage.height(5000))
 backgroundImage.zIndex(-1);
 stage.on('dragmove', function(e) {
     // Check if the stage is being dragged to the right
-    console.log("dragging: ", stage.x(), stage.y())
     var pos = backgroundImage.getAbsolutePosition();
-    console.log("background: ", pos.x , pos.y);
     adjustBG();
   });
 backgroundImage.on('dragmove', function() {
@@ -259,7 +256,6 @@ async function wait() {
     }
 
     var newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-    console.log("newScale: ",newScale)
 
     if (newScale * STANDARD_SIZE > Math.max(...layer.children.map((child) => child.width()))) {
         layer.children.map((child) => {

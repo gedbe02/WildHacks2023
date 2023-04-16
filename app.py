@@ -35,12 +35,15 @@ def add_comment():
     #WE HAVE POSTID NOW
 
     # # Insert the comment data into the database
-    # cursor.execute('INSERT INTO comments (comment, postid, userid) VALUES (?, ?, ?)',
-    #                (data['message']), ?, 3)
+    cursor.execute('INSERT INTO comments (comment, postid, userid) VALUES (?, ?, ?)',
+                   (data['message']), data['postId'], 3)
+    result = conn.execute('select * from comments')
+    for row in result:
+        print(row)
     # conn.commit()
 
     # # Close the database connection
-    # conn.close()
+    conn.close()
 
     # Return a success message
     return jsonify({'message': data['message'] + " " + data['postId']})

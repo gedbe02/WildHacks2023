@@ -177,17 +177,21 @@ cursor = conn.cursor()
 # result = conn.execute('select * from rocks')
 # for row in result:
 #     rockid = row[0]
-
+#     if rockid == 1:
+#         continue
 #     conn.execute(f"INSERT INTO posts (userid, caption, rockid) "+
 #                   f"VALUES (1, '', {rockid});")
 
-# conn.commit()
+#conn.commit()
 # cursor = conn.cursor()
 
-# result = conn.execute('select * from posts')
-# for row in result:
-#     print(row)
 
+result = conn.execute('select * from posts')
+
+
+for row in result:
+    print(row)
+    
 # sql = '''CREATE TABLE posts (
 #              postid INTEGER PRIMARY KEY,
 #              userid INTEGER,
