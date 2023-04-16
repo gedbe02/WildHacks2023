@@ -112,10 +112,12 @@ async function getRocks() {
 
 function getThing(column, ids, id, temp_fix) {
     var thing = "";
+    
     for (var i = 0; i < column.length; i++) {
         var ids_i = ids[i];
-        if (temp_fix) {
-            ids_i += 5;
+        if(temp_fix){
+          console.log("!!",ids)
+          console.log(id, ids_i)
         }
         if (ids_i == id) {
             thing = column[i];
@@ -147,24 +149,12 @@ async function wait() {
         var div = document.getElementById("rock_post");
         
         var username = getThing(usersTB.usernames, usersTB.user_ids, userId, false);
-        // for (var i = 0; i < usersTB.usernames.length; i++) {
-        //     if (usersTB.user_ids[i] == userId) {
-        //         username = usersTB.usernames[i];
-        //         break;
-        //     }
-        // }
         
-        var caption = getThing(postsTB.captions, postsTB.rock_ids, rockId, true);
+        var caption = getThing(postsTB.captions, postsTB.rock_ids, rockId, false);
 
-        // for (var i = 0; i < postsTB.captions.length; i++) {
-        //     console.log(postsTB.rock_ids[i], rockId);
-        //     if (postsTB.rock_ids[i]+5 == rockId) {
-        //         caption = postsTB.captions[i];
-        //         break;
-        //     }
-        // }
+
         
-        var postId = getThing(postsTB.post_ids, postsTB.rock_ids, rockId, true);
+        var postId = getThing(postsTB.post_ids, postsTB.rock_ids, rockId, false);
 
 
         var num_likes = 0;
@@ -174,9 +164,12 @@ async function wait() {
             }
         }
         //CommentID -> UserID -> Username
-        var commentId = getThing(commentsTB.comment_ids, commentsTB.post_ids, postId, false);
-        var commentUserId = getThing(commentsTB.user_ids, commentsTB.comment_ids, commentId, false);
-        var comment_username = getThing(usersTB.usernames, usersTB.user_ids, commentUserId, false);
+        var commentId = getThing(commentsTB.comment_ids, commentsTB.post_ids, postId, true);
+        console.log(commentId)
+        var commentUserId = getThing(commentsTB.user_ids, commentsTB.comment_ids, commentId, true);
+        console.log(commentUserId)
+        var comment_username = getThing(usersTB.usernames, usersTB.user_ids, commentUserId, true);
+        console.log(comment_username)
 
         var comment = getThing(commentsTB.comments, commentsTB.post_ids , postId);
 
