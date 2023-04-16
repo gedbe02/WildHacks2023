@@ -9,7 +9,6 @@ var stage = new Konva.Stage({
 });
 var bgLayer = new Konva.Layer({
     id: "BackgroundLayer",
-    listening: false
 });
 stage.add(bgLayer);
 var layer = new Konva.Layer({
@@ -29,7 +28,7 @@ var backgroundImage = new Konva.Image({
     scale:{x:8,y:8},
   });
 bgLayer.add(backgroundImage);
-console.log(backgroundImage.zIndex(-1));
+backgroundImage.zIndex(-1);
 }
 bgImageObj.src = '/static/temp_lakefill_map.png';
 
@@ -113,7 +112,6 @@ var y_max =  -87.6697244
 for (var i = 0; i < imageCoordinates.length; i++) {
     (function() {
     var j = i;
-    // var imageUrl = imageUrls[i];
     var imageCoors = imageCoordinates[i];
     var imageObj = new Image();
     imageObj.onload = function() {
@@ -128,10 +126,14 @@ for (var i = 0; i < imageCoordinates.length; i++) {
             height: 100,
             draggable: false
         })
+        image.on('mouseover', function() {
+            // call your onclick function here
+            console.log('Image hover!');
+          });
         layer.add(image);
         layer.draw();
     };
-    imageObj.src = "https://ff72cc5981e91dc696eab542cd952b1dd74f1ca6a9e7f1798b38fc9-apidata.googleusercontent.com/download/storage/v1/b/example-bucket-rocks/o/images%2F0005159a-de49-43e2-bb7a-4ca693a5425d.jpg?jk=Ac_6HjJOtkkm-FfXZUi0ocHTVQUElaz2rQB8m4Hp-t-eRpTjgs8gaQAERfpmaB4274n-50wHz84IvS8DygknoDXLNJPgFWB54oGBxMCtVwkf12mPuCgooq-Bh2VYtuk4KqpXU_rNGvNh5ndRQSIlOg8vbsF2xD4ZcgTfrLIKHowky5lD82lJTpNzSYVRXnDRR1qDGwKvPEXY9ISEArMH17Cl4Nrm9Qcf21CNq2es38kvPOevxusScg4fYNmQLozefHIfiokxny-G45t2Bvsjkv1aZUgovfdWnV1RCjh6zKw_URC6YrxGJes8G8Ymm6gELbadbIaB-Wfq0UX1eKLQ4H8mZq_T2_vPEd2lhSCvBAaGXdsqM9KeFF6tBmwy2izSoutV9x3NhbLGcB-tmW7yeuzfCnnp1AiJx0xvTZiMM3icv6Pj2426HhuWjplStfIMhCYKaaFsyzKJUq2IC57zb1MolDaOWzlSR4crpKAhvaIw6OlqWhvsKbUY0jZfnosjuxtluA1AkWN4RiPKJoSvup6fzPr2dBZA96MKcjhEP_3WtB36pbeJKBz-vZG2miaDUS63Q0EloD6bdYxSFzmOhgtZx3K-RjGTlUFijyjLUe8LN4NMz9aQ3fnT05eFV5o10aKtsUAbc9Q2n6QS-96b7U8w_oq7B3rBeD2holoUkUhVM85ayKE5nm88GFwLDUW8ePr4F1iOgsUCxP3zNqT6jg84UNOZqkGnksHxF94jSDiweWhMrTPjTj-ayX8r5utxRS4WbkBM6p6RAzDoYhn3YZWTLxBCDoccWidQH-vW7GFqqn6cwXuZImGKBaoscwN2_iEPXK5BI0BUjgOLzsqsg8OD20jkYFSuKmhqCYyhHJAkHZHI37yzEMSkfOW1Vd4X8zRhNFBbajJ4ZavbsqI7TmHj9Bzsag9at4DkotGErFI6dRCD8NdPfDR_BVXoPU4M29MzkzseRINVGRa_vaROh0kyDvhkA7ut88doxzYKF197MqppWz-7rhNYuhIh02K7v11KwGvcffN5upFCsz3N2MPH3rf0Wgps52GFz3oe35BOGET0PT1brKYzdRvWY5XJQ4HdnpFcc_o65S7e4diNsH1NR-ntz4ubjqNKzjxzav6NuYGN5zURHTrlCVNh5rSwogbqaspY4FyeeLflHwtya6O9cwm4taeZq-IivqG9T9vuvepDiIGc_RdgqjmN11DmK5J2bZlX30p7Wyzn-RhQFWvIY0t5SL42LtFoIJhNxl9g9NS1cYLQ8Uz38kwyIgpexIMXSHVVtVVwIQ9QUap6Mjaifps&isca=1"//'https://picsum.photos/200/200/?random&rnd'+new Date().getTime();    
+    imageObj.src = "https://storage.googleapis.com/example-bucket-rocks/images/be384416-ab02-4cf8-a139-c34052c218d8.jpg";    
     })();
 }
 
@@ -158,13 +160,12 @@ direction = -direction;
 }
 
 var newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+console.log(layer.children)
 
 if (newScale * STANDARD_SIZE > Math.max(...layer.children.map((child) => child.width()))) {
     layer.children.map((child) => {
-        if (child.name() !== "background") {
             child.scale({x: 1/newScale, y: 1/newScale});
             console.log(child.scale())
-        }
     })
     layer.batchDraw();
 } else if (newScale * 300 < Math.min(...layer.children.map((child) => child.width()))) {
@@ -180,4 +181,3 @@ y: pointer.y - mousePointTo.y * newScale,
 };
 stage.position(newPos);
 });
-
