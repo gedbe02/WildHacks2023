@@ -1,4 +1,4 @@
-var width = window.innerWidth;
+var width = 800;
 var height = window.innerHeight;
 var BG_SCALE = 30
 
