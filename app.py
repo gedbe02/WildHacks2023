@@ -36,11 +36,9 @@ def add_comment():
 
     # # Insert the comment data into the database
     cursor.execute('INSERT INTO comments (comment, postid, userid) VALUES (?, ?, ?)',
-                   (data['message']), data['postId'], 3)
-    result = conn.execute('select * from comments')
-    for row in result:
-        print(row)
-    # conn.commit()
+                   (data['message'], data['postId'], 3))
+    
+    conn.commit()
 
     # # Close the database connection
     conn.close()
@@ -48,15 +46,27 @@ def add_comment():
     # Return a success message
     return jsonify({'message': data['message'] + " " + data['postId']})
 
+@app.route('/like', methods=['POST'])
+def like():
+    # Get the comment data from the request
+    data = request.json
 
-world = "World"
-@app.route('/test')
-def test():
-    return 'Hello ' + world + '!'
+    # # Connect to the database
+    conn = sqlite3.connect('rocksdb.db')
+    cursor = conn.cursor()
+    #WE HAVE POSTID NOW
+
+    # # Insert the comment data into the database
+    # cursor.execute('INSERT INTO likes (postid) VALUES (?)',
+    #                (data['postId']))
+    
+    conn.commit()
+
+    # # Close the database connection
+    conn.close()
+
+    # Return a success message
+    return jsonify({'message': "LIKE: " + data['postId']})
 
 
-@app.route('/search/<search_term>')
-@app.route('/search')
-def search(search_term=''):
-    #pprint(restaurants[0]) # for debugging
-    return "To Do: Search Term: " + search_term
+

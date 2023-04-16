@@ -186,12 +186,10 @@ cursor = conn.cursor()
 # cursor = conn.cursor()
 
 
-result = conn.execute('select * from posts')
 
-
+result = conn.execute('select * from comments')
 for row in result:
-    print(row)
-    
+        print(row)
 # sql = '''CREATE TABLE posts (
 #              postid INTEGER PRIMARY KEY,
 #              userid INTEGER,

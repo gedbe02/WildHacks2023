@@ -19,8 +19,8 @@
 
             <div class="likes-and-comments">
                 <div class="icons">
-                    <i id="thumbs_up_icon" class="fa fa-thumbs-up fa-2x"></i>
-                    <i id="thumbs_down_icon" class="fa fa-thumbs-down fa-2x fa-flip-horizontal"></i>
+                    <button id="thumbs_up_icon" class="fa fa-thumbs-up fa-2x"></button>
+                    <button id="thumbs_down_icon" class="fa fa-thumbs-down fa-2x fa-flip-horizontal"></button>
                 </div>
 
                 <div class="likes">
@@ -59,6 +59,30 @@
                             body: JSON.stringify({
                                 name: name,
                                 message: message,
+                                postId: postId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data.message);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    });
+                    
+                    form = document.getElementsByClassName('icons');
+                    form.addEventListener('thumbs_up_icon', (event) => {
+                        event.preventDefault();
+
+                        const postId = document.getElementById("post_id").innerHTML;
+
+                        fetch('/like', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
                                 postId: postId
                             })
                         })
