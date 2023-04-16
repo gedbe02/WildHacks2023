@@ -65,6 +65,48 @@
                             console.error(error);
                         });
                     });
+                    const form2 = document.getElementById('icons');
+                    console.log(form2)
+                    form2.addEventListener('submit', (event) => {
+                        event.preventDefault()
+                        const liked = document.getElementById("liked").innerHTML;
+                        console.log(liked)
+                        if (liked == "10") {
+                            return;
+                        }
+                        document.getElementById("liked").innerHTML = "10";
+                        const postId = document.getElementById("post_id").innerHTML;
+                        const name = "joe"
+                        var num_likes = document.getElementById("likes").innerHTML;
+
+                        console.log("hi")
+                        num_likes = parseInt(num_likes.split(' ')[0]);
+                        
+                        var like_word = "Likes"
+                        if (num_likes == 0) {
+                            like_word = "Like";
+                        }
+                        console.log((num_likes+1).toString() + " " + like_word)
+                        document.getElementById("likes").innerHTML = (num_likes+1).toString() + " " + like_word;
+
+                        console.log(num_likes)
+                        fetch('/like', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                postId: postId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data.message);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    });
                 </script>
             </div>
         </div>
