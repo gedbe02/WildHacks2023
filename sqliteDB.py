@@ -63,10 +63,40 @@ def ingest_data():
         print(row)
     
     
+def fix_data():
+    conn = None
 
+    conn = sqlite3.connect(dbname)
+
+    res = conn.execute("select * from posts")
+    cursor = conn.cursor()
+    for row in res:
+        asset_id = row[0]
+        url = row[4]
+        image = url.split("/")[5].split("?")[0]
+        new_url = f'https://storage.googleapis.com/example-bucket-rocks/images/{image}'
+
+        sql = '''UPDATE posts SET photourl = ? WHERE assetid= ?'''
+        cursor.execute(sql, (new_url, asset_id))
+    
+    res = conn.execute("select * from posts")
+    for row in res:
+        asset_id = row[0]
+        url = row[4]
+    conn.commit()
+    
 #delete_all_data()
-ingest_data()
+#ingest_data()
 #read_all_data()
+#fix_data()
+
+conn = None
+
+conn = sqlite3.connect(dbname)
+res = conn.execute("select * from posts")
+for row in res:
+    print(row[4])
+
 
 
 
