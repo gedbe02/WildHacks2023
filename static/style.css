@@ -1,9 +1,13 @@
 header {
-    /* padding: 3vh; */
-    background: #bbdaba;
+    padding-left: 3vh;
+    background: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+h1 {
+  color: #53B4F9
 }
 
 body * {
