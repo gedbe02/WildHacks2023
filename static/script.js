@@ -3,8 +3,8 @@ var height = window.innerHeight;
 
 var stage = new Konva.Stage({
     container: 'grid_container',
-    width: width,
-    height: height-100,
+    width: 500,
+    height: 2000,
     draggable: true,
 });
 var bgLayer = new Konva.Layer({
@@ -20,21 +20,28 @@ var bgImageObj = new Image();
 bgImageObj.onload = function() {
 var backgroundImage = new Konva.Image({
     name: "background",
-    x: -1788.1176373866588,
-    y: -704.6010856517915,
+    x: -110.79556274414062,
+    y: -173.53604125976562,
     image: bgImageObj,
-    width: stage.width(),
-    height: stage.height(),
-    scale:{x:8,y:8},
+    // draggable: true,
+    // scale:{x:13.33,y:13.33},
   });
 bgLayer.add(backgroundImage);
 backgroundImage.zIndex(-1);
+console.log(backgroundImage.width(1200), backgroundImage.height(5000))
+backgroundImage.on('dragmove', function() {
+    // Get the current absolute position of the image on the stage
+    var pos = backgroundImage.getAbsolutePosition();
+    
+    // Log the position to the console
+    console.log('Image is at position (' + pos.x + ',' + pos.y + ')');
+  });
 }
-bgImageObj.src = '/static/temp_lakefill_map.png';
+bgImageObj.src = '/static/lakefill.svg';
 
 
-var WIDTH = 500;
-var HEIGHT = 2000;
+var WIDTH = stage.width();
+var HEIGHT = stage.height();
 var STANDARD_SIZE = 150;
 var imageUrls = ["https://imgprd19.hobbylobby.com/2/30/2d/2302d006d25572e782e92cf5f31bfb9295dd7fef/1400Wx1400H-1609817-0320-px.jpg",
                 "https://imageio.forbes.com/specials-images/imageserve/dv424076/0x0.jpg?format=jpg&width=1200",
@@ -117,6 +124,7 @@ for (var i = 0; i < imageCoordinates.length; i++) {
     imageObj.onload = function() {
         var xPos = WIDTH * (imageCoors[1]-y_min)/(y_max-y_min);
         var yPos = HEIGHT+-1* HEIGHT * (imageCoors[0]-x_min)/(x_max-x_min);
+        console.log(imageCoors)
         console.log(xPos, yPos)
         var image = new Konva.Image({
             x: xPos,
@@ -126,10 +134,11 @@ for (var i = 0; i < imageCoordinates.length; i++) {
             height: 100,
             draggable: false
         })
-        image.on('mouseover', function() {
-            // call your onclick function here
-            console.log('Image hover!');
-          });
+        image.on('click',  function(e) {
+    
+        // Log the clicked coordinates and the Konva.Image URL to the console
+        alert('Clicked on image at (' + image.getAbsolutePosition().x + ', '+image.getAbsolutePosition().y+ ')');
+        });
         layer.add(image);
         layer.draw();
     };
@@ -139,45 +148,44 @@ for (var i = 0; i < imageCoordinates.length; i++) {
 
 var scaleBy = 1.1;
 stage.on('wheel', (e) => {
-// stop default scrolling
-e.evt.preventDefault();
+    // stop default scrolling
+    e.evt.preventDefault();
 
-var oldScale = stage.scaleX();
-var pointer = stage.getPointerPosition();
+    var oldScale = stage.scaleX();
+    var pointer = stage.getPointerPosition();
 
-var mousePointTo = {
-x: (pointer.x - stage.x()) / oldScale,
-y: (pointer.y - stage.y()) / oldScale,
-};
+    var mousePointTo = {
+    x: (pointer.x - stage.x()) / oldScale,
+    y: (pointer.y - stage.y()) / oldScale,
+    };
 
-// how to scale? Zoom in? Or zoom out?
-let direction = e.evt.deltaY > 0 ? 1 : -1;
+    // how to scale? Zoom in? Or zoom out?
+    let direction = e.evt.deltaY > 0 ? 1 : -1;
 
-// when we zoom on trackpad, e.evt.ctrlKey is true
-// in that case lets revert direction
-if (e.evt.ctrlKey) {
-direction = -direction;
-}
+    // when we zoom on trackpad, e.evt.ctrlKey is true
+    // in that case lets revert direction
+    if (e.evt.ctrlKey) {
+    direction = -direction;
+    }
 
-var newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-console.log(layer.children)
+    var newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
 
-if (newScale * STANDARD_SIZE > Math.max(...layer.children.map((child) => child.width()))) {
-    layer.children.map((child) => {
-            child.scale({x: 1/newScale, y: 1/newScale});
-            console.log(child.scale())
-    })
-    layer.batchDraw();
-} else if (newScale * 300 < Math.min(...layer.children.map((child) => child.width()))) {
-    newScale = Math.min(...layer.children.map((child) => child.width()))/300;
-  }
+    if (newScale * STANDARD_SIZE > Math.max(...layer.children.map((child) => child.width()))) {
+        layer.children.map((child) => {
+                child.scale({x: 1/newScale, y: 1/newScale});
+                console.log(child.scale())
+        })
+        layer.batchDraw();
+    } else if (newScale * 300 < Math.min(...layer.children.map((child) => child.width()))) {
+        newScale = Math.min(...layer.children.map((child) => child.width()))/300;
+    }
 
 
-stage.scale({ x: newScale, y: newScale });
+    stage.scale({ x: newScale, y: newScale });
 
-var newPos = {
-x: pointer.x - mousePointTo.x * newScale,
-y: pointer.y - mousePointTo.y * newScale,
-};
-stage.position(newPos);
+    var newPos = {
+    x: pointer.x - mousePointTo.x * newScale,
+    y: pointer.y - mousePointTo.y * newScale,
+    };
+    stage.position(newPos);
 });
