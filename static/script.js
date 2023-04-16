@@ -1,11 +1,11 @@
-var width = window.innerWidth/2;
+var width = 800;
 var height = window.innerHeight;
 var BG_SCALE = 30
 
 var stage = new Konva.Stage({
     container: 'grid_container',
-    width: 500,
-    height: 2000,
+    width: width,
+    height: height,
     draggable: true,
 });
 var bgLayer = new Konva.Layer({
@@ -24,8 +24,6 @@ var backgroundImage = new Konva.Image({
     x: -90,
     y: -173.53604125976562,
     image: bgImageObj,
-    // draggable: true,
-    // scale:{x:BG_SCALE,y:BG_SCALE},
   });
 bgLayer.add(backgroundImage);
 console.log(backgroundImage.width(1200), backgroundImage.height(5000))
@@ -57,8 +55,8 @@ function adjustBG() {
       }
 }
 
-var WIDTH = stage.width();
-var HEIGHT = stage.height();
+var WIDTH = 500;
+var HEIGHT = 2000;
 var STANDARD_SIZE = 150;
 
 async function getRocks() {
@@ -198,10 +196,12 @@ async function wait() {
         document.getElementById("post_id").innerHTML = postId.toString();
 
 
-        if (div.style.display === "none") {
-        div.style.display = "block";
+        if (div.getAttribute("curr_rock")!=rockId) {
+            div.style.display = "block";
+            div.setAttribute("curr_rock", rockId)
         } else {
-        div.style.display = "none";
+            div.style.display = "none";
+            div.setAttribute("curr_rock", "0")
         }
     }
 
@@ -228,6 +228,17 @@ async function wait() {
             })
             image.on('click',  function(e) {
                 showDiv(image.attrs['rockid'], image.attrs['userid'], image.attrs['url'], usersTB, postsTB, commentsTB, likesTB);
+            });
+            image.on('mouseover', function() {
+              this.stroke('yellow');
+              this.strokeWidth(5);
+              this.moveToTop();
+              layer.draw();
+            });
+            image.on('mouseout', function() {
+              this.stroke(null);
+              this.strokeWidth(0);
+              layer.draw();
             });
             layer.add(image);
             layer.draw();

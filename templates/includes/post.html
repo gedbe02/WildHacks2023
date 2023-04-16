@@ -1,77 +1,66 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title>Post</title>
-        <link rel="stylesheet" href="../static/styles.css">
 
-    </head>
+<div class="post", id="rock_post", curr_rock="0">
+    <div id="post_id" style="display: none;" >111</div>
+    <div class="post_user">
+        <h3 id="post_username">Salavander</h3>
+        <i id="ellipsis" class="fas fa-ellipsis-h"></i>
+    </div>
 
-    <body>
-        <div class="post", id="rock_post">
-            <div id="post_id" style="display: none;">111</div>
-            <div class="post_user">
-                <h3 id="post_username">Salavander</h3>
-                <i id="ellipsis" class="fas fa-ellipsis-h"></i>
-            </div>
+    <img id="post_pic" src="https://i.pinimg.com/originals/f4/e6/ca/f4e6caf6890d04b38f2a169053108d6b.jpg" alt="">
 
-            <img id="post_pic" src="https://i.pinimg.com/originals/f4/e6/ca/f4e6caf6890d04b38f2a169053108d6b.jpg" alt="">
-
-            <div class="likes-and-comments">
-                <div class="icons">
-                    <i id="thumbs_up_icon" class="fa fa-thumbs-up fa-2x"></i>
-                    <i id="thumbs_down_icon" class="fa fa-thumbs-down fa-2x fa-flip-horizontal"></i>
-                </div>
-
-                <div class="likes">
-                    <h3 id="likes">321 likes</h3>
-                </div>
-
-                <div class="comments">
-                    <h4 class="comment" id="caption_username"><strong>Salavander</strong> I drew this :D</h4>
-                   
-                    <h4 class="comment" id="comment_username"><strong>prachi_the_owl</strong> This is the worst drawing I've ever seen</h4>
-                    <p id="time">Rock O'Clock AM</p>
-                </div>
-                
-                <form class="add_comment_section" id="comment-form">
-                    <div class="write_comment_section">
-                        <i id="smiley_icon" class="far fa-smile fa-2x"></i>
-                        <h5 id="add_a_comment"><textarea name="message" placeholder="Add a comment..."></textarea></h5>
-                    </div>
-                
-                    <button type="submit">Post</button>
-                </form>
-                <script>
-                    const form = document.getElementById('comment-form');
-                    form.addEventListener('submit', (event) => {
-                        event.preventDefault();
-
-                        const name = "Joe";
-                        const message = form.elements['message'].value;
-                        const postId = document.getElementById("post_id").innerHTML;
-
-                        fetch('/comment', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                name: name,
-                                message: message,
-                                postId: postId
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data.message);
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
-                    });
-                </script>
-            </div>
+    <div class="likes-and-comments">
+        <div class="icons">
+            <i id="thumbs_up_icon" class="fa fa-thumbs-up fa-2x"></i>
+            <i id="thumbs_down_icon" class="fa fa-thumbs-down fa-2x fa-flip-horizontal"></i>
         </div>
-    </body>
-</html>
+
+        <div class="likes">
+            <h3 id="likes">321 likes</h3>
+        </div>
+
+        <div class="comments">
+            <h4 class="comment" id="caption_username"><strong>Salavander</strong> I drew this :D</h4>
+            
+            <h4 class="comment" id="comment_username"><strong>prachi_the_owl</strong> This is the worst drawing I've ever seen</h4>
+            <p id="time">Rock O'Clock AM</p>
+        </div>
+        
+        <form class="add_comment_section" id="comment-form">
+            <div class="write_comment_section">
+                <i id="smiley_icon" class="far fa-smile fa-2x"></i>
+                <h5 id="add_a_comment"><textarea name="message" placeholder="Add a comment..."></textarea></h5>
+            </div>
+        
+            <button type="submit">Post</button>
+        </form>
+        <script>
+            const form = document.getElementById('comment-form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const name = "Joe";
+                const message = form.elements['message'].value;
+                const postId = document.getElementById("post_id").innerHTML;
+
+                fetch('/comment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        message: message,
+                        postId: postId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            });
+        </script>
+    </div>
+</div>
