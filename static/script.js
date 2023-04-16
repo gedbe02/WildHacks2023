@@ -1,5 +1,6 @@
 var width = window.innerWidth/2;
 var height = window.innerHeight;
+var BG_SCALE = 30
 
 var stage = new Konva.Stage({
     container: 'grid_container',
@@ -23,22 +24,21 @@ var backgroundImage = new Konva.Image({
     x: -110.79556274414062,
     y: -173.53604125976562,
     image: bgImageObj,
-    // draggable: true,
-    // scale:{x:13.33,y:13.33},
   });
 bgLayer.add(backgroundImage);
-backgroundImage.zIndex(-1);
 console.log(backgroundImage.width(1200), backgroundImage.height(5000))
-backgroundImage.on('dragmove', function() {
-    // Get the current absolute position of the image on the stage
-    var pos = backgroundImage.getAbsolutePosition();
-    
-    // Log the position to the console
-    console.log('Image is at position (' + pos.x + ',' + pos.y + ')');
-  });
-}
+backgroundImage.zIndex(-1);
 bgImageObj.src = '/static/lakefill.svg';
 
+function adjustBG() {
+    var images = bgLayer.children;
+    var bg_x = images[0].getAbsolutePosition().x;
+    if (bg_x > 0) {
+        // If it is, prevent the default behavior
+          console.log("ADJUST")
+          stage.x(stage.x() - bg_x)
+      }
+}
 
 var WIDTH = stage.width();
 var HEIGHT = stage.height();
@@ -64,10 +64,10 @@ async function wait() {
     var imageCoordinates = rocksTB.coords;
     var rockIds = rocksTB.rock_ids;
     
-    var x_min = 42.05779722222222
-    var x_max = 42.05989722222222
-    var y_min = -87.67122799972223
-    var y_max =  -87.6697244
+   var x_min = 42.05779722222222
+   var x_max = 42.05989722222222
+   var y_min = -87.67122799972223
+   var y_max =  -87.6697244
 
     function showDiv() {
         var div = document.getElementById("rock_post");
@@ -107,6 +107,7 @@ async function wait() {
         })();
     }
 
+
     var scaleBy = 1.1;
     stage.on('wheel', (e) => {
     // stop default scrolling
@@ -130,6 +131,7 @@ async function wait() {
     }
 
     var newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    console.log("newScale: ",newScale)
 
     if (newScale * STANDARD_SIZE > Math.max(...layer.children.map((child) => child.width()))) {
         layer.children.map((child) => {
@@ -149,6 +151,7 @@ async function wait() {
     y: pointer.y - mousePointTo.y * newScale,
     };
     stage.position(newPos);
+    adjustBG();
     });
 }
 wait();

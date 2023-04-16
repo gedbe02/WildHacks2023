@@ -1,6 +1,6 @@
 header {
     padding: 3vh;
-    background: #6ace7d;
+    background: #bbdaba;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,7 +11,7 @@ body * {
     font-family: sans-serif;
 }
 body {
-  background-color: #c93fdb;
+  background-color: #53B4F9;
 }
 
 #rock_post {
