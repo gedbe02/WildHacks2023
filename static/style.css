@@ -156,8 +156,7 @@ main {
   flex-direction: column;
 }
 .post {
-  height: 30%;
-  width: 60%;
+
   background-color: rgb(255, 255, 255);
   border: solid 10px #f0f0f0;
   margin-left: 8%;

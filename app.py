@@ -9,6 +9,9 @@ app = Flask(__name__)
 # Get DB data
 sqlHelpers.get_rocks_table()
 sqlHelpers.get_posts_table()
+sqlHelpers.get_users_table()
+sqlHelpers.get_comments_table()
+sqlHelpers.get_likes_table()
 
 current_user = USER("Ben", "Geduld", "bengeduld@gmail.com")
 @app.route('/')
