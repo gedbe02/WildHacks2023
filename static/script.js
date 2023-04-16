@@ -1,11 +1,11 @@
-var width = window.innerWidth/2;
+var width = window.innerWidth;
 var height = window.innerHeight;
 var BG_SCALE = 30
 
 var stage = new Konva.Stage({
     container: 'grid_container',
-    width: 500,
-    height: 2000,
+    width: width,
+    height: height,
     draggable: true,
 });
 var bgLayer = new Konva.Layer({
@@ -57,8 +57,8 @@ function adjustBG() {
       }
 }
 
-var WIDTH = stage.width();
-var HEIGHT = stage.height();
+var WIDTH = 500;
+var HEIGHT = 2000;
 var STANDARD_SIZE = 150;
 
 async function getRocks() {
@@ -197,11 +197,14 @@ async function wait() {
         document.getElementById("post_id").innerHTML = postId.toString();
 
 
-        if (div.style.display === "none") {
-        div.style.display = "block";
+        if (div.getAttribute("curr_rock")!=rockId) {
+            div.style.display = "block";
+            div.setAttribute("curr_rock", rockId)
         } else {
-        div.style.display = "none";
+            div.style.display = "none";
+            div.setAttribute("curr_rock", "0")
         }
+        // alert(rockId)
     }
 
     for (var i = 0; i < imageCoordinates.length; i++) {
