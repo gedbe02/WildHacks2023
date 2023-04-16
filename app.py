@@ -57,10 +57,11 @@ def like():
     #WE HAVE POSTID NOW
 
     # # Insert the comment data into the database
-    # cursor.execute('INSERT INTO likes (postid) VALUES (?)',
-    #                (data['postId']))
-    
+    cursor.execute('INSERT INTO likes (postid) VALUES (?)',
+                     (data['postId'],))
     conn.commit()
+    result = conn.execute('select * from likes')
+
 
     # # Close the database connection
     conn.close()
@@ -69,4 +70,23 @@ def like():
     return jsonify({'message': "LIKE: " + data['postId']})
 
 
+@app.route('/dislike', methods=['POST'])
+def dislike():
+    # Get the comment data from the request
+    data = request.json
 
+    # # Connect to the database
+    conn = sqlite3.connect('rocksdb.db')
+    cursor = conn.cursor()
+    #WE HAVE POSTID NOW
+
+    # # Insert the comment data into the database
+    cursor.execute("DELETE FROM my_table WHERE id = ?", (data['postId'],))
+
+    conn.commit()
+
+    # # Close the database connection
+    conn.close()
+
+    # Return a success message
+    return jsonify({'message': "LIKE: " + data['postId']})

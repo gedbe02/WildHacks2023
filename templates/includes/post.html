@@ -18,10 +18,11 @@
             <img id="post_pic" src="https://i.pinimg.com/originals/f4/e6/ca/f4e6caf6890d04b38f2a169053108d6b.jpg" alt="">
 
             <div class="likes-and-comments">
-                <div class="icons">
-                    <button id="thumbs_up_icon" class="fa fa-thumbs-up fa-2x"></button>
-                    <button id="thumbs_down_icon" class="fa fa-thumbs-down fa-2x fa-flip-horizontal"></button>
-                </div>
+                <form class="icons" id="icons">
+                    <button id="thumbs_up_icon" class="fa fa-thumbs-up fa-2x" type="submit"></button>
+                    <div style="display: none" id="liked">0</div>
+
+                </form>
 
                 <div class="likes">
                     <h3 id="likes">321 likes</h3>
@@ -71,12 +72,31 @@
                         });
                     });
                     
-                    form = document.getElementsByClassName('icons');
-                    form.addEventListener('thumbs_up_icon', (event) => {
-                        event.preventDefault();
-
+                    const form2 = document.getElementById('icons');
+                    console.log(form2)
+                    form2.addEventListener('submit', (event) => {
+                        event.preventDefault()
+                        const liked = document.getElementById("liked").innerHTML;
+                        console.log(liked)
+                        if (liked == "10") {
+                            return;
+                        }
+                        document.getElementById("liked").innerHTML = "10";
                         const postId = document.getElementById("post_id").innerHTML;
+                        const name = "joe"
+                        var num_likes = document.getElementById("likes").innerHTML;
 
+                        console.log("hi")
+                        num_likes = parseInt(num_likes.split(' ')[0]);
+                        
+                        var like_word = "Likes"
+                        if (num_likes == 0) {
+                            like_word = "Like";
+                        }
+                        console.log((num_likes+1).toString() + " " + like_word)
+                        document.getElementById("likes").innerHTML = (num_likes+1).toString() + " " + like_word;
+
+                        console.log(num_likes)
                         fetch('/like', {
                             method: 'POST',
                             headers: {
@@ -94,6 +114,8 @@
                             console.error(error);
                         });
                     });
+                    
+                    
                 </script>
             </div>
         </div>
