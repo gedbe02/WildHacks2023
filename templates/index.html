@@ -19,18 +19,7 @@
         <div id="content">
             <div id="grid_container"></div>
             <script lang="text/javascript" src="/static/script.js"></script>
-            <button id="showDivButton">Show Div</button>
-            <script>
-                function showDiv() {
-                  var div = document.getElementById("rock_post");
-                  if (div.style.display === "none") {
-                    div.style.display = "block";
-                  } else {
-                    div.style.display = "none";
-                  }
-                }
-                document.getElementById("showDivButton").addEventListener("click", showDiv);
-            </script>
+
             {% include "includes/post.html" %}
         </div>
     </body>
