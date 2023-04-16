@@ -57,6 +57,7 @@ async function wait() {
     var imageUrls = rocksTB.urls;
     var imageCoordinates = rocksTB.coords;
     var rockIds = rocksTB.rock_ids;
+    var thumbUrls = rocksTB.thumnails
     
     var x_min = 42.05779722222222
     var x_max = 42.05989722222222
@@ -65,11 +66,11 @@ async function wait() {
 
     function showDiv() {
         var div = document.getElementById("rock_post");
-        if (div.style.display === "none") {
+        //if (div.style.display === "none") {
         div.style.display = "block";
-        } else {
-        div.style.display = "none";
-        }
+        //} else {
+        //gitdiv.style.display = "none";
+        //}
     }
 
     for (var i = 0; i < imageCoordinates.length; i++) {
@@ -97,7 +98,7 @@ async function wait() {
             layer.add(image);
             layer.draw();
         };
-        imageObj.src = imageUrls[i];
+        imageObj.src = thumbUrls[i];
         })();
     }
 
