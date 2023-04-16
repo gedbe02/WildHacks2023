@@ -15,6 +15,31 @@ stage.add(layer);
 var WIDTH = 500;
 var HEIGHT = 2000;
 var STANDARD_SIZE = 150;
+var imagelist;
+var coords;
+async function getData() {
+    try {
+      const response = await fetch('static/urls.json');
+      const urls = await response.json();
+      console.log(urls.content);
+      imagelist = [... urls.content];
+      coords = [... urls.coords];
+      // console.log(urls.location[1]); // prints "quote2" to the console
+      // do something with the data
+      return urls
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+async function wait() {
+    await getData()
+
+
+
+
+
+
 var imageUrls = ["https://imgprd19.hobbylobby.com/2/30/2d/2302d006d25572e782e92cf5f31bfb9295dd7fef/1400Wx1400H-1609817-0320-px.jpg",
                 "https://imageio.forbes.com/specials-images/imageserve/dv424076/0x0.jpg?format=jpg&width=1200",
                 "https://www.gannett-cdn.com/presto/2022/07/21/USAT/0ba6d19c-537a-41b0-b467-fc0c9434ce66-Rock_Scowl.jpg?width=300&height=450&fit=crop&format=pjpg&auto=webp",
@@ -87,12 +112,12 @@ var x_min = 42.05779722222222
 var x_max = 42.05989722222222
 var y_min = -87.67122799972223
 var y_max =  -87.6697244
-
-for (var i = 0; i < imageCoordinates.length; i++) {
+console.log(coords)
+for (var i = 5; i < imagelist.length; i++) {
     (function() {
     var j = i;
     // var imageUrl = imageUrls[i];
-    var imageCoors = imageCoordinates[i];
+    var imageCoors = coords[i];
     var imageObj = new Image();
     imageObj.onload = function() {
         var xPos = WIDTH * (imageCoors[1]-y_min)/(y_max-y_min);
@@ -109,7 +134,7 @@ for (var i = 0; i < imageCoordinates.length; i++) {
         layer.add(image);
         layer.draw();
     };
-    imageObj.src = 'https://picsum.photos/200/200/?random&rnd'+new Date().getTime();    
+    imageObj.src = imagelist[i];    
     })();
 }
 
@@ -156,3 +181,5 @@ y: pointer.y - mousePointTo.y * newScale,
 stage.position(newPos);
 });
 
+}
+wait()
