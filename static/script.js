@@ -24,8 +24,6 @@ var backgroundImage = new Konva.Image({
     x: -90,
     y: -173.53604125976562,
     image: bgImageObj,
-    // draggable: true,
-    // scale:{x:BG_SCALE,y:BG_SCALE},
   });
 bgLayer.add(backgroundImage);
 console.log(backgroundImage.width(1200), backgroundImage.height(5000))
@@ -204,7 +202,6 @@ async function wait() {
             div.style.display = "none";
             div.setAttribute("curr_rock", "0")
         }
-        // alert(rockId)
     }
 
     for (var i = 0; i < imageCoordinates.length; i++) {
@@ -230,6 +227,17 @@ async function wait() {
             })
             image.on('click',  function(e) {
                 showDiv(image.attrs['rockid'], image.attrs['userid'], image.attrs['url'], usersTB, postsTB, commentsTB, likesTB);
+            });
+            image.on('mouseover', function() {
+              this.stroke('yellow');
+              this.strokeWidth(5);
+              this.moveToTop();
+              layer.draw();
+            });
+            image.on('mouseout', function() {
+              this.stroke(null);
+              this.strokeWidth(0);
+              layer.draw();
             });
             layer.add(image);
             layer.draw();
