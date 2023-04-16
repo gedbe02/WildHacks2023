@@ -1,5 +1,5 @@
 var width = 800;
-var height = window.innerHeight;
+var height = window.innerHeight*1.5;
 var BG_SCALE = 30
 
 var stage = new Konva.Stage({
