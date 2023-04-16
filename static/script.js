@@ -140,6 +140,7 @@ async function wait() {
     var imageCoordinates = rocksTB.coords;
     var rockIds = rocksTB.rock_ids;
     var userIds = rocksTB.user_ids;
+    var thumbUrls = rocksTB.thumbnails
     
    var x_min = 42.05779722222222
    var x_max = 42.05989722222222
@@ -231,7 +232,7 @@ async function wait() {
             layer.add(image);
             layer.draw();
         };
-        imageObj.src = imageUrls[i];
+        imageObj.src = thumbUrls[i];
         })();
     }
 
