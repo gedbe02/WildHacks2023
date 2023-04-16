@@ -69,7 +69,8 @@ def upload_and_receive_data():
 
         blob.upload_from_filename(f'images/jpgs/{new_name}')
         #os.system(f'images/jpgs/{img}')
-        url = f'https://storage.cloud.google.com/example-bucket-rocks/images/{new_name}?authuser=2'
+        url = f'https://storage.googleapis.com/example-bucket-rocks/images/{image}'
+        
 
         #print("Image Uploaded")
         row = [latitude, longitude, url]
