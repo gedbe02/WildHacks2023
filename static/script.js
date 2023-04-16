@@ -21,7 +21,7 @@ var bgImageObj = new Image();
 bgImageObj.onload = function() {
 var backgroundImage = new Konva.Image({
     name: "background",
-    x: -110.79556274414062,
+    x: -90,
     y: -173.53604125976562,
     image: bgImageObj,
     // draggable: true,
