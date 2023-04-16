@@ -24,10 +24,27 @@ var backgroundImage = new Konva.Image({
     x: -110.79556274414062,
     y: -173.53604125976562,
     image: bgImageObj,
+    // draggable: true,
+    // scale:{x:BG_SCALE,y:BG_SCALE},
   });
 bgLayer.add(backgroundImage);
 console.log(backgroundImage.width(1200), backgroundImage.height(5000))
 backgroundImage.zIndex(-1);
+stage.on('dragmove', function(e) {
+    // Check if the stage is being dragged to the right
+    console.log("dragging: ", stage.x(), stage.y())
+    var pos = backgroundImage.getAbsolutePosition();
+    console.log("background: ", pos.x , pos.y);
+    adjustBG();
+  });
+backgroundImage.on('dragmove', function() {
+    // Get the current absolute position of the image on the stage
+    var pos = backgroundImage.getAbsolutePosition();
+    
+    // Log the position to the console
+    console.log('Image is at position (' + pos.x + ',' + pos.y + ')');
+  });
+}
 bgImageObj.src = '/static/lakefill.svg';
 
 function adjustBG() {
