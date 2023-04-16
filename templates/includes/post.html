@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Photo App</title>
+        <link rel="stylesheet" href="../static/styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="post">
+            <div class="post_user">
+                <!-- <h3 id="post_username">{{ post.get('user').get('username') }}</h3> -->
+                <h3 id="post_username">Salavander</h3>
+                <i id="ellipsis" class="fas fa-ellipsis-h"></i>
+            </div>
+
+            <!-- <img id="post_pic" src="{{ post.get('image_url') }}" alt=""> -->
+            <img id="post_pic" src="../images/Kermit.jpg" alt="">
+
+            <div class="likes-and-comments">
+                <div class="icons">
+                    <i id="heart_icon" class="far fa-heart fa-2x"></i>
+                    <i id="comment_icon" class="far fa-comment fa-2x"></i>
+                    <i id="plane_icon" class="far fa-paper-plane fa-2x"></i>
+                    <i id="bookmark" class="far fa-bookmark fa-2x"></i>
+                </div>
+
+                <div class="likes">
+                    <h3 id="likes">{{ post.get('likes') }} likes</h3>
+                </div>
+
+                <div class="comments">
+                    <h4 class="comment"><strong>{{ post.get('user').get('username') }}</strong> {{ post.get('title') }}</h4>
+                    {% if post.get('comments') %}
+                        {% if post.get('comments')|length > 1 %}
+                            <h5 class="viewall">View all {{ post.get('comments')|length }} comments</h5>
+                        {% endif %}
+                    <h4 class="comment"><strong>{{ post.get('comments')[0].get('user').get('username') }}</strong> {{ post.get('comments')[0].get('text') }}</h4>
+                    {% endif %}
+                    <p id="time">{{ post.get('display_time') }}</p>
+                </div>
+                
+                <div class="add_comment_section">
+                    <div class="write_comment_section">
+                        <i id="smiley_icon" class="far fa-smile fa-2x"></i>
+                        <h5 id="add_a_comment">Add a comment...</h5>
+                    </div>
+                    <a id="post" href="#">Post</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

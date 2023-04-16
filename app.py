@@ -9,7 +9,7 @@ current_user = USER("Ben", "Geduld", "bengeduld@gmail.com")
 @app.route('/')
 def mainPage():
     return render_template(
-        'main.html',
+        'index.html',
         user=current_user
     )
 
