@@ -7,6 +7,7 @@ from pillow_heif import register_heif_opener
 import os
 import piexif
 import csv
+import uuid
 
 # Setup
 storage_client = storage.Client(project="Rocks")
@@ -29,50 +30,63 @@ def extract_coord(vals, d):
     
     return dec_coords
 
+def upload_and_receive_data():
+    data = []
+    max_lat = -float("inf")
+    min_lat = float("inf")
+    max_long = -float("inf")
+    min_long = float("inf")
+    b = False
+    for img in os.listdir("images/rocks"):
+        #img = "wario.jpg"
+        image_path = f'images/rocks/{img}'
+        #image_path = f'images/wario.jpg'
+        #Change to JPG
+        try:
+            image = Image.open(image_path)
+        except:
+            print("fuck")
+            continue
+        
 
-data = []
-max_lat = -float("inf")
-min_lat = float("inf")
-max_long = -float("inf")
-min_long = float("inf")
-for img in os.listdir("images/rocks"):
-    image_path = f'images/rocks/{img}'
-    #Change to JPG
-    try:
-        image = Image.open(image_path)
-    except:
-        continue
-    #image.save("images/jpgs/Kermit.jpg")
+        # Extract Meta Data 
+        exif_dict = piexif.load(image.info.get('exif'))
+        #Latitude
+        lat_vals  = exif_dict['GPS'][2]
+        lat_dir   = exif_dict['GPS'][1]
+        latitude = extract_coord(lat_vals, lat_dir)
+        #Longitude
+        long_vals = exif_dict['GPS'][4]
+        long_dir = exif_dict['GPS'][3]
+        longitude = extract_coord(long_vals, long_dir)
+        # Upload Image
+        new_name = f'{uuid.uuid4()}.jpg'
+        image.save(f'images/jpgs/{new_name}')
 
-    # Extract Meta Data 
-    exif_dict = piexif.load(image.info.get('exif'))
-    #Latitude
-    lat_vals  = exif_dict['GPS'][2]
-    lat_dir   = exif_dict['GPS'][1]
-    latitude = extract_coord(lat_vals, lat_dir)
-    #Longitude
-    long_vals = exif_dict['GPS'][4]
-    long_dir = exif_dict['GPS'][3]
-    longitude = extract_coord(long_vals, long_dir)
-    row = [latitude, longitude] #add more
+        blob = bucket.blob(f'images/{new_name}')
 
-    # Min Max Calc
-    if latitude >= max_lat:
-        max_lat = latitude
-    if latitude <= min_lat:
-        min_lat = latitude
+        blob.content_type = "image/jpeg"
 
-    if longitude >= max_long:
-        max_long = longitude
-    if longitude <= min_long:
-        min_long = longitude
-print(f'Max Latitude: {max_lat}, Min Latitude: {min_lat}')
-print(f'Max Longitude: {max_long}, Min Longitude: {min_long}')
-# Upload Image
-#blob = bucket.blob("test_images/Kermit.jpg")
+        blob.upload_from_filename(f'images/jpgs/{new_name}')
+        #os.system(f'images/jpgs/{img}')
+        url = f'https://storage.cloud.google.com/example-bucket-rocks/images/{new_name}?authuser=2'
 
-#blob.content_type = "image/jpeg"
+        #print("Image Uploaded")
+        row = [latitude, longitude, url]
 
-#blob.upload_from_filename(file_path)
+        data.append(row)
+        # Min Max Calc
+        if latitude >= max_lat:
+            max_lat = latitude
+        if latitude <= min_lat:
+            min_lat = latitude
 
-#print("Image Uploaded")
+        if longitude >= max_long:
+            max_long = longitude
+        if longitude <= min_long:
+            min_long = longitude
+    return data
+    #print(f'Max Latitude: {max_lat}, Min Latitude: {min_lat}')
+    #print(f'Max Longitude: {max_long}, Min Longitude: {min_long}')
+
+#upload_and_receive_data()
