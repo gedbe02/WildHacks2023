@@ -1,16 +1,21 @@
 from flask import Flask
 from flask import render_template
 from user import USER
+import sqlHelpers
 
 # initializes flask app:
 app = Flask(__name__)
+
+# Get DB data
+sqlHelpers.get_rocks_table()
+sqlHelpers.get_posts_table()
 
 current_user = USER("Ben", "Jamin", "bengeduld@gmail.com")
 @app.route('/')
 def mainPage():
     return render_template(
-        'main.html',
-        user=current_user
+        'index.html',
+        user=current_user,
     )
 
 
