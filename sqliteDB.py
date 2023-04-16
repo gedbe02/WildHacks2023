@@ -170,11 +170,30 @@ cursor = conn.cursor()
 # conn.execute(f"INSERT INTO users (username) "+
 #               f"VALUES ('Alex');")
 
+# conn.execute(f"INSERT INTO users (username) "+
+#               f"VALUES ('The Rockster');")
 
-conn.commit()
 
+# result = conn.execute('select * from rocks')
+# for row in result:
+#     rockid = row[0]
 
+#     conn.execute(f"INSERT INTO posts (userid, caption, rockid) "+
+#                   f"VALUES (1, '', {rockid});")
 
+# conn.commit()
+# cursor = conn.cursor()
+
+# result = conn.execute('select * from posts')
+# for row in result:
+#     print(row)
+
+# sql = '''CREATE TABLE posts (
+#              postid INTEGER PRIMARY KEY,
+#              userid INTEGER,
+#              caption TEXT,
+#              rockid INTEGER
+#          )'''
 
 
 

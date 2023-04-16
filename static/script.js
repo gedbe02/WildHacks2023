@@ -61,7 +61,7 @@ var WIDTH = stage.width();
 var HEIGHT = stage.height();
 var STANDARD_SIZE = 150;
 
-async function getData() {
+async function getRocks() {
     try {
       const response = await fetch('static/json/rocksTB.json');
       const rocksTB = await response.json();
@@ -74,20 +74,129 @@ async function getData() {
     }
   }
 
+  async function getUsers() {
+    try {
+      const response = await fetch('static/json/usersTB.json');
+      const usersTB = await response.json();
+      return usersTB
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  async function getPosts() {
+    try {
+      const response = await fetch('static/json/postsTB.json');
+      const postsTB = await response.json();
+      return postsTB
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function getComments() {
+    try {
+      const response = await fetch('static/json/commentsTB.json');
+      const commentsTB = await response.json();
+      return commentsTB
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async function getLikes() {
+    try {
+      const response = await fetch('static/json/likesTB.json');
+      const likesTB = await response.json();
+      return likesTB
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+function getThing(column, ids, id, temp_fix) {
+    var thing = "";
+    for (var i = 0; i < column.length; i++) {
+        var ids_i = ids[i];
+        if (temp_fix) {
+            ids_i += 5;
+        }
+        if (ids_i == id) {
+            thing = column[i];
+            break;
+        }
+    }
+
+    return thing;
+}
 
 async function wait() {
-    var rocksTB = await getData();
+    var rocksTB = await getRocks();
+    var usersTB = await getUsers();
+    var postsTB = await getPosts();
+    var commentsTB = await getComments();
+    var likesTB = await getLikes();
+
     var imageUrls = rocksTB.urls;
     var imageCoordinates = rocksTB.coords;
     var rockIds = rocksTB.rock_ids;
+    var userIds = rocksTB.user_ids;
     
    var x_min = 42.05779722222222
    var x_max = 42.05989722222222
    var y_min = -87.67122799972223
    var y_max =  -87.6697244
 
-    function showDiv() {
+    function showDiv(rockId, userId, url, usersTB, postsTB, commentsTB, likesTB) {
         var div = document.getElementById("rock_post");
+        
+        var username = getThing(usersTB.usernames, usersTB.user_ids, userId, false);
+        // for (var i = 0; i < usersTB.usernames.length; i++) {
+        //     if (usersTB.user_ids[i] == userId) {
+        //         username = usersTB.usernames[i];
+        //         break;
+        //     }
+        // }
+        
+        var caption = getThing(postsTB.captions, postsTB.rock_ids, rockId, true);
+
+        // for (var i = 0; i < postsTB.captions.length; i++) {
+        //     console.log(postsTB.rock_ids[i], rockId);
+        //     if (postsTB.rock_ids[i]+5 == rockId) {
+        //         caption = postsTB.captions[i];
+        //         break;
+        //     }
+        // }
+        
+        var postId = getThing(postsTB.post_ids, postsTB.rock_ids, rockId, true);
+
+
+        var num_likes = 0;
+        for (var i = 0; i < likesTB.post_ids.length; i++) {
+            if (postsTB.post_ids[i] == postId) {
+                num_likes += 1;
+            }
+        }
+        //CommentID -> UserID -> Username
+        var commentId = getThing(commentsTB.comment_ids, commentsTB.post_ids, postId, false);
+        var commentUserId = getThing(commentsTB.user_ids, commentsTB.comment_ids, commentId, false);
+        var comment_username = getThing(usersTB.usernames, usersTB.user_ids, commentUserId, false);
+
+        var comment = getThing(commentsTB.comments, commentsTB.post_ids , postId);
+
+
+        document.getElementById("post_username").innerHTML = username;
+        document.getElementById("caption_username").innerHTML = "<strong>" + username + "</strong> " + caption;
+        document.getElementById("post_pic").src = url;
+        document.getElementById("comment_username").innerHTML = "<strong>" + comment_username + "</strong> " + comment;
+        var like_word = "Likes"
+        if (num_likes == 1) {
+            like_word = "Like";
+        }
+        document.getElementById("likes").innerHTML = num_likes.toString() + " " + like_word;
+        console.log(postId);
+        document.getElementById("post_id").innerHTML = postId.toString();
+
+
         if (div.style.display === "none") {
         div.style.display = "block";
         } else {
@@ -112,10 +221,12 @@ async function wait() {
                 width: 100,
                 height: 100,
                 draggable: false,
-                rockid: rockIds[j]
+                rockid: rockIds[j],
+                userid: userIds[j],
+                url: imageUrls[j]
             })
             image.on('click',  function(e) {
-                showDiv(image.attrs['rockid']);
+                showDiv(image.attrs['rockid'], image.attrs['userid'], image.attrs['url'], usersTB, postsTB, commentsTB, likesTB);
             });
             layer.add(image);
             layer.draw();
