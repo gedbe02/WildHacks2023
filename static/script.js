@@ -128,6 +128,10 @@ for (var i = 0; i < imageCoordinates.length; i++) {
             height: 100,
             draggable: false
         })
+        image.on('mouseover', function() {
+            // call your onclick function here
+            console.log('Image hover!');
+          });
         layer.add(image);
         layer.draw();
     };
@@ -161,10 +165,8 @@ var newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
 
 if (newScale * STANDARD_SIZE > Math.max(...layer.children.map((child) => child.width()))) {
     layer.children.map((child) => {
-        if (child.name() !== "background") {
-            child.scale({x: 1/newScale, y: 1/newScale});
-            console.log(child.scale())
-        }
+        child.scale({x: 1/newScale, y: 1/newScale});
+        console.log(child.scale())
     })
     layer.batchDraw();
 } else if (newScale * 300 < Math.min(...layer.children.map((child) => child.width()))) {
