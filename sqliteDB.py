@@ -1,6 +1,25 @@
 import sqlite3
 from sqlite3 import Error 
 import os
+from io import BytesIO
+import pandas as pd
+from google.cloud import storage
+from PIL import Image
+from PIL.ExifTags import TAGS
+from pillow_heif import register_heif_opener
+import os
+import piexif
+import csv
+import uuid
+import time
+
+
+storage_client = storage.Client(project="Rocks")
+
+bucket_name = "example-bucket-rocks"
+bucket = storage_client.get_bucket(bucket_name)
+
+
 #import bucket
 current_path = os.getcwd()
 dbname = "rocksdb.db"
@@ -31,11 +50,42 @@ def delete_all_data():
     conn.commit()
 
 def read_all_data():
-    conn = sqlite3.connect(dbname)
-    result = conn.execute('select * from posts')
-    for row in result:
-        print(row)
+    folder_path = "C:\\Users\\alex-\\Desktop\\SQL WILDHACKS\\WildHacks2023\\jpgs"
+    thumbnail_path = "C:\\Users\\alex-\\Desktop\\SQL WILDHACKS\\WildHacks2023\\thumbnails"
 
+    if not os.path.exists(thumbnail_path):
+        os.mkdir(thumbnail_path)
+
+   
+    conn = sqlite3.connect(dbname)
+    result = conn.execute('select rockid, url from rocks')
+    
+    for row in result:
+        for root, dirs, files in os.walk(thumbnail_path):
+            for file in files:
+                #print(str(files))
+                if row[1].find(str(file)) != -1:
+                    print(f"found!!! {file}")
+
+                    new_name = str(file)
+                    blob = bucket.blob(f'thumbknails/{new_name}')
+
+                    blob.content_type = "image/jpeg"
+
+                    blob.upload_from_filename(f'C:\\Users\\alex-\\Desktop\\SQL WILDHACKS\\WildHacks2023\\thumbnails\\{new_name}')
+                    newurl = f'https://storage.googleapis.com/example-bucket-rocks/thumbknails/{new_name}'
+                    result = conn.execute(f"UPDATE rocks SET thumb_url = '{newurl}' WHERE rockid = {row[0]};")
+                    time.sleep(.2)
+                    break
+
+    #os.system(f'images/jpgs/{img}')
+    #url = f'https://storage.cloud.google.com/example-bucket-rocks/images/{new_name}?authuser=2'
+
+
+
+
+
+    conn.commit()
 
 
 
@@ -68,7 +118,7 @@ def fix_data():
 
     conn = sqlite3.connect(dbname)
 
-    res = conn.execute("select * from posts")
+    res = conn.execute("select * from rocks")
     cursor = conn.cursor()
     for row in res:
         asset_id = row[0]
@@ -87,14 +137,14 @@ def fix_data():
     
 #delete_all_data()
 #ingest_data()
-#read_all_data()
+read_all_data()
 #fix_data()
 
-conn = None
+#conn = None
 
-conn = sqlite3.connect(dbname)
+#conn = sqlite3.connect(dbname)
 
-cursor = conn.cursor()
+#cursor = conn.cursor()
 
 
 # cursor.execute(sql)
@@ -171,7 +221,7 @@ cursor = conn.cursor()
 #               f"VALUES ('Alex');")
 
 
-conn.commit()
+#.commit()
 
 
 
