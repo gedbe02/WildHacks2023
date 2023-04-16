@@ -8,6 +8,7 @@ def get_rocks_table():
     user_ids = []
     coords = []
     urls = []
+    thumburls = []
     
     conn = sqlite3.connect(dbname)
     result = conn.execute('select * from rocks')
@@ -19,12 +20,15 @@ def get_rocks_table():
         user_ids.append(row[1])
         coords.append([row[2], row[3]])
         urls.append(row[4])
+        thumburls.append(row[5])
 
     jsondata = {
         "rock_ids" : rock_ids,
         "user_ids" : user_ids,
         "coords"   : coords,
-        "urls"     : urls
+        "urls"     : urls,
+        "thumbnails" : thumburls
+
     }
     with open("static//json//rocksTB.json", "w") as json_file:
      json.dump(jsondata, json_file)
@@ -49,6 +53,7 @@ def get_posts_table():
         "user_ids" : user_ids,
         "captions"   : captions,
         "rock_ids"     : rock_ids
+        
     }
     with open("static//json//postsTB.json", "w") as json_file:
      json.dump(jsondata, json_file)
