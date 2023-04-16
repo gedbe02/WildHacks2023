@@ -115,5 +115,5 @@ def get_likes_table():
 #get_rocks_table()
 #get_posts_table()
 #get_users_table()
-get_comments_table()
+#get_comments_table()
 #get_likes_table()

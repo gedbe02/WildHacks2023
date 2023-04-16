@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+import sqlite3
 from flask import render_template
 from user import USER
 import sqlHelpers
@@ -20,6 +21,29 @@ def mainPage():
         'index.html',
         user=current_user,
     )
+
+@app.route('/comment', methods=['POST'])
+def add_comment():
+    # Get the comment data from the request
+    data = request.json
+
+
+    # # Connect to the database
+    conn = sqlite3.connect('rocksdb.db')
+    cursor = conn.cursor()
+
+    #WE HAVE POSTID NOW
+
+    # # Insert the comment data into the database
+    # cursor.execute('INSERT INTO comments (comment, postid, userid) VALUES (?, ?, ?)',
+    #                (data['message']), ?, 3)
+    # conn.commit()
+
+    # # Close the database connection
+    # conn.close()
+
+    # Return a success message
+    return jsonify({'message': data['message'] + " " + data['postId']})
 
 
 world = "World"

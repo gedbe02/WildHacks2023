@@ -9,6 +9,7 @@
 
     <body>
         <div class="post", id="rock_post">
+            <div id="post_id" style="display: none;">111</div>
             <div class="post_user">
                 <h3 id="post_username">Salavander</h3>
                 <i id="ellipsis" class="fas fa-ellipsis-h"></i>
@@ -33,13 +34,43 @@
                     <p id="time">Rock O'Clock AM</p>
                 </div>
                 
-                <div class="add_comment_section">
+                <form class="add_comment_section" id="comment-form">
                     <div class="write_comment_section">
                         <i id="smiley_icon" class="far fa-smile fa-2x"></i>
-                        <h5 id="add_a_comment">Add a comment...</h5>
+                        <h5 id="add_a_comment"><textarea name="message" placeholder="Add a comment..."></textarea></h5>
                     </div>
-                    <a id="post" href="#">Post</a>
-                </div>
+                
+                    <button type="submit">Post</button>
+                </form>
+                <script>
+                    const form = document.getElementById('comment-form');
+                    form.addEventListener('submit', (event) => {
+                        event.preventDefault();
+
+                        const name = "Joe";
+                        const message = form.elements['message'].value;
+                        const postId = document.getElementById("post_id").innerHTML;
+
+                        fetch('/comment', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                name: name,
+                                message: message,
+                                postId: postId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data.message);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                    });
+                </script>
             </div>
         </div>
     </body>

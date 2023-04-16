@@ -170,7 +170,8 @@ async function wait() {
             like_word = "Like";
         }
         document.getElementById("likes").innerHTML = num_likes.toString() + " " + like_word;
-
+        console.log(postId);
+        document.getElementById("post_id").innerHTML = postId.toString();
 
 
         if (div.style.display === "none") {
